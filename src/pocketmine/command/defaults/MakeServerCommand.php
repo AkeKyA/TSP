@@ -1,24 +1,4 @@
 <?php
-
-/*
- *
- *  ____            _        _   __  __ _                  __  __ ____
- * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
- * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
- * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
- * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * @author PocketMine Team
- * @link http://www.pocketmine.net/
- *
- *
-*/
-
 namespace pocketmine\command\defaults;
 
 use pocketmine\command\CommandSender;
@@ -27,13 +7,13 @@ use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\network\protocol\Info;
 
-class MakeServerCommand extends VanillaCommand {
+class MakeServerCommand extends VanillaCommand{
 
 	public function __construct($name){
 		parent::__construct(
 			$name,
 			"Creates a PocketMine Phar",
-			"/makeserver"
+			"/makeserver (nogz)"
 		);
 		$this->setPermission("pocketmine.command.makeserver");
 	}
@@ -42,9 +22,10 @@ class MakeServerCommand extends VanillaCommand {
 		if(!$this->testPermission($sender)){
 			return false;
 		}
-
+         $Path = Server::getInstance()->getPluginPath() . DIRECTORY_SEPARATOR . "TSP";
+          if(!file_exists($Path)) @mkdir($Path);
 		$server = $sender->getServer();
-		$pharPath = Server::getInstance()->getPluginPath() . DIRECTORY_SEPARATOR . "TSP" . DIRECTORY_SEPARATOR . $server->getName() . "_" . $server->getPocketMineVersion() . "_" . time() . ".phar";
+		$pharPath = Server::getInstance()->getPluginPath() . DIRECTORY_SEPARATOR . "TSP" . DIRECTORY_SEPARATOR . $server->getName() . "_" . $server->getPocketMineVersion() . ".phar";
 		if(file_exists($pharPath)){
 			$sender->sendMessage("Phar file already exists, overwriting...");
 			@unlink($pharPath);
@@ -56,6 +37,7 @@ class MakeServerCommand extends VanillaCommand {
 			"api" => $server->getApiVersion(),
 			"minecraft" => $server->getVersion(),
 			"protocol" => Info::CURRENT_PROTOCOL,
+			"creator" => " TSP MakeServerCommand",
 			"creationDate" => time()
 		]);
 		$phar->setStub('<?php define("pocketmine\\\\PATH", "phar://". __FILE__ ."/"); require_once("phar://". __FILE__ ."/src/pocketmine/PocketMine.php");  __HALT_COMPILER();');
@@ -70,13 +52,16 @@ class MakeServerCommand extends VanillaCommand {
 				continue;
 			}
 			$phar->addFile($file, $path);
-			$sender->sendMessage("[TSP] Adding $path");
+			$sender->sendMessage("[Hydracon] Adding $path");
 		}
 		foreach($phar as $file => $finfo){
 			/** @var \PharFileInfo $finfo */
 			if($finfo->getSize() > (1024 * 512)){
 				$finfo->compress(\Phar::GZ);
 			}
+		}
+		if(!isset($args[0]) or (isset($args[0]) and $args[0] != "nogz")){
+			$phar->compressFiles(\Phar::GZ);
 		}
 		$phar->stopBuffering();
 
