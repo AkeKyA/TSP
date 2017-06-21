@@ -13,10 +13,10 @@ Use the 'version' command in Tesseract.
 If the version is invalid, the issue will be CLOSED and marked as spam! 
 NOTE: If you are using WINDOWS 10 Edition, please remember to let us know!
 -->
-* TSP Version: 1.3.0 CS
+* TSP Version: 1.4.0 Revolution
 * PHP:
 * Server OS:
-* Game version: 1.1.0.55
+* Game version: 1.1.1
 * Server host:
 <!--- 
 Explain what your server is being hosted on. Examples: Home computer, EnderCrate, VirtualGladiators, etc. 
