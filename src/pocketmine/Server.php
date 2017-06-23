@@ -1552,6 +1552,7 @@ class Server {
 		$this->logger = $logger;
 		$this->filePath = $filePath;
 		try{
+
 			if(!file_exists($dataPath . "worlds/")){
 				mkdir($dataPath . "worlds/", 0777);
 			}
@@ -1563,7 +1564,8 @@ class Server {
 			if(!file_exists($pluginPath)){
 				mkdir($pluginPath, 0777);
 			}
-                        if!file_exists($dataPath . "crashdumps/"){
+
+                        if(!file_exists($dataPath . "crashdumps/")){
 				mkdir($dataPath . "crashdumps/", 0777);
 			}
 
