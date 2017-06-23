@@ -1563,7 +1563,7 @@ class Server {
 			if(!file_exists($pluginPath)){
 				mkdir($pluginPath, 0777);
 			}
-                        if!file_exists($dataPath . "crashdumps/")){
+                        if!file_exists($dataPath . "crashdumps/"){
 				mkdir($dataPath . "crashdumps/", 0777);
 			}
 
