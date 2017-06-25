@@ -4,7 +4,7 @@
 
 ## Notice
 
-**TSP is on 1.1, stable version please feel free to report issues that you have with the software.** <br>
+**TSP is on 1.1.2 stable version please feel free to report issues that you have with the software.** <br>
 
 ## CookieSoftware/TSP Team
 
